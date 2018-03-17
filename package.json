@@ -1,8 +1,8 @@
 {
   "name": "@f9software/model",
-  "version": "0.0.1",
+  "version": "0.0.6",
   "description": "",
-  "main": "Model.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -21,7 +21,9 @@
     "uuid": "^3.2.1"
   },
   "devDependencies": {
+    "@types/jasmine": "^2.8.6",
     "@types/lodash": "^4.14.104",
-    "@types/uuid": "^3.4.3"
+    "@types/uuid": "^3.4.3",
+    "jasmine": "^3.1.0"
   }
 }

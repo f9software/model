@@ -35,7 +35,7 @@ export interface IModel<T> {
 
     getFlag<K extends keyof Flags>(flag: K): Flags[K];
 
-    commit(): undefined;
+    commit(): any;
 }
 
 interface Flags {
@@ -44,7 +44,7 @@ interface Flags {
 }
 
 export abstract class Model<T> implements IModel<T> {
-    private data: Partial<T>;
+    private readonly data: Partial<T>;
 
     private flags: Flags = {
         ghost: true,
@@ -62,7 +62,7 @@ export abstract class Model<T> implements IModel<T> {
         this.data = _.assign(initData, data);
     }
 
-    protected abstract init(): undefined;
+    protected abstract init(): T;
 
     public setFlag<K extends keyof Flags>(flag: K, value: Flags[K]) {
         this.flags[flag] = value;
