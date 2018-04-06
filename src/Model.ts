@@ -53,13 +53,19 @@ export abstract class Model<T> implements IModel<T> {
 
     public readonly __id: string;  // internal id
 
-    constructor(data: Partial<T>, ghost: boolean = true) {
+    constructor(data: Partial<T> = null, ghost: boolean = true) {
         this.__id = uuid.v1();
 
-        this.setFlag('ghost', ghost);
+        if (data !== null) {
+            this.setFlag('ghost', ghost);
+        }
 
-        const initData = this.init();
-        this.data = _.assign(initData, data);
+        this.data = this.init();
+        this.setData(data);
+
+        if (!ghost) {
+            this.setFlag('modified', false);
+        }
     }
 
     protected abstract init(): T;
@@ -72,8 +78,8 @@ export abstract class Model<T> implements IModel<T> {
         return this.flags[flag];
     }
 
-    public setData(data: Partial<T>): any {
-        _.assign(this.data, data);
+    public setData<K extends keyof T>(data: Partial<T>): any {
+        Object.keys(data).forEach((key: K) => this._set(<K> key, <T[K]> data[key]));
         this.setFlag('modified', true);
     }
 
@@ -82,7 +88,7 @@ export abstract class Model<T> implements IModel<T> {
     }
 
     public set<K extends keyof T>(key: K, value: T[K]): any {
-        this.data[key] = value;
+        this._set(key, value);
         this.setFlag('modified', true);
     }
 
@@ -95,5 +101,13 @@ export abstract class Model<T> implements IModel<T> {
 
         flags.ghost = false;
         flags.modified = false;
+    }
+
+    private _set<K extends keyof T>(key: K, value: T[K]): any {
+        if (!this.data.hasOwnProperty(key)) {
+            throw 'Property "' + key + '" can\'t be found in "' + Object.keys(this.data).join('", "') + '".';
+        }
+
+        this.data[key] = value;
     }
 }
