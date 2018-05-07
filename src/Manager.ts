@@ -14,6 +14,14 @@ export class Manager {
     private static records: {[key: string]: Collection<Record>} = {};
 
     /**
+     * Returns an array of all Model(s).
+     * @returns {Model[]}
+     */
+    public static getModels(): Model[] {
+        return this.models.getRange();
+    }
+
+    /**
      * Returns a Model.
      * @param {string} id
      * @returns {Model}
