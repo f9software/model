@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/f9software/model#readme",
   "dependencies": {
+    "@f9software/collection": "^1.0.0",
     "@f9software/reducers": "^1.2.2",
     "lodash": "^4.17.10",
     "uuid": "^3.2.1"

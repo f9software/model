@@ -1,5 +1,5 @@
 import {Record} from "./Record";
-import {Collection} from "./Collection";
+import {Collection} from "@f9software/collection";
 import {Model} from "./Model";
 
 /**

@@ -1,5 +1,5 @@
 import {Field} from "./Field";
-import {Collection} from "./Collection";
+import {Collection} from "@f9software/collection";
 
 /**
  * Data is an object which holds data according to what Collection<Field> contains. The set and get are using validators

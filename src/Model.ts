@@ -1,4 +1,4 @@
-import {Collection} from "./Collection";
+import {Collection} from "@f9software/collection";
 import {Data} from "./Data";
 import {Field} from "./Field";
 import {Manager} from "./Manager";
