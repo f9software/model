@@ -22,7 +22,7 @@ export class Record {
 
     private data: Data = this.model.initData();
 
-    public destroyed = false;
+    private destroyed = false;
 
     /**
      *
@@ -83,6 +83,10 @@ export class Record {
         this.data = this.model = null;
 
         this.destroyed = true;
+    }
+
+    public isDestroyed() {
+        return this.destroyed;
     }
 }
 
