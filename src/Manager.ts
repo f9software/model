@@ -102,4 +102,14 @@ export class Manager {
     public static getRecords(model: Model): Record[] {
         return this.getRecordsCollectionForModel(model).getRange();
     }
+
+    /**
+     * Finds the record per model and id.
+     * @param {Model} model
+     * @param {string} id
+     * @returns {Record}
+     */
+    public static findRecord(model: Model, id: string): Record {
+        return this.getRecordsCollectionForModel(model).get(id);
+    }
 }
