@@ -42,8 +42,21 @@ export class Record {
         return this.data.get(field);
     }
 
+    /**
+     * Set data for single field.
+     * @param {string} field
+     * @param value
+     */
     public set(field: string, value: any) {
         this.data.set(field, value);
+    }
+
+    /**
+     * Set data for multiple fields.
+     * @param {{[p: string]: any}} data
+     */
+    public setAll(data: {[key: string]: any}) {
+        this.data.setAll(data);
     }
 
     /**

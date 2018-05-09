@@ -69,6 +69,14 @@ export class Data {
     }
 
     /**
+     * Set multiple properties.
+     * @param {{[p: string]: any}} data
+     */
+    public setAll(data: {[key: string]: any}) {
+        Object.keys(data).forEach(key => this.set(key, data[key]));
+    }
+
+    /**
      * Dumps the data. Developer can chose whether to include or not the default values.
      * @param {boolean} includeDefaultValues
      * @returns {{[p: string]: any}}
