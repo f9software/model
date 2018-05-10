@@ -28,7 +28,22 @@ export class Data {
      * @private
      */
     private _get(field: Field): any {
-        return this.values[field.name] || field.defaultValue || null;
+        let value = null;
+
+        if (this.values.hasOwnProperty(field.name)) {
+            value = this.values[field.name];
+        }
+        else if (field.defaultValue) {
+            if (typeof field.defaultValue === 'function') {
+                value = field.defaultValue();
+                this.set(field.name, value);
+            }
+            else {
+                value = field.defaultValue;
+            }
+        }
+
+        return value;
     }
 
     /**
