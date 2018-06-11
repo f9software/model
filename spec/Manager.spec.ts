@@ -24,7 +24,7 @@ describe('Manager', () => {
 
         // the constructor will automatically register the new Model
         const model = new Model('dummy');
-        expect(model).toBe(<Model> Manager.getModel('dummy'));
+        expect(model).toBe(<Model<any>> Manager.getModel('dummy'));
 
         const record = new Record(model);
         expect(Manager.getRecords(model).length).toBe(1);
