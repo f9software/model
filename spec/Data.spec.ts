@@ -25,11 +25,11 @@ describe('Data', () => {
         fields.add(arr);
         fields.add(obj);
 
-        const foo: Data = new Data(fields);
+        const foo: Data<any> = new Data(fields);
         foo.get('name').push('john');
         foo.get('siblings').push('sibling foo');
 
-        const bar: Data = new Data(fields);
+        const bar: Data<any> = new Data(fields);
         bar.get('name').push('tom');
         bar.get('siblings').push('sibling bar');
 

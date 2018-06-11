@@ -8,7 +8,7 @@ describe('Model', () => {
     it('Create a new model', () => {
 
         const id = 'dummy';
-        const model = new Model(id);
+        const model = new Model<any>(id);
         const fields = model.getFields();
 
         // make sure that constructor automatically registers the new Model
