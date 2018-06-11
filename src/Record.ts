@@ -59,9 +59,8 @@ export class Record<T> {
 
     /**
      * Set data for multiple fields.
-     * @param {{[p: string]: any}} data
      */
-    public setAll(data: T) {
+    public setAll(data: Partial<T>) {
         this.data.setAll(data);
     }
 
