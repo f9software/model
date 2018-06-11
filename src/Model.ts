@@ -3,6 +3,11 @@ import {Data} from "./Data";
 import {Field} from "./Field";
 import {Manager} from "./Manager";
 
+/**
+ * The model is used to create a structure for its fields. It creates a "model" in structure for its records to follow.
+ * 
+ * Any change on model's fields is reflected further in Record.
+ */
 export class Model {
     private fields: Collection<Field> = new Collection<Field>(field => field.name);
 

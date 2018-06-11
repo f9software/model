@@ -13,34 +13,33 @@ export class Manager {
 
     private static records: {[key: string]: Collection<Record>} = {};
 
+
+    /* MODEL */
+
     /**
-     * Returns an array of all Model(s).
-     * @returns {Model[]}
+     * Returns an array containing all models.
      */
     public static getModels(): Model[] {
         return this.models.getRange();
     }
 
-    /**
-     * Returns a Model.
-     * @param {string} id
-     * @returns {Model}
-     */
     public static getModel(id: string): Model | undefined {
         return this.models.get(id);
     }
 
     /**
-     * Registers a Model.
-     * @param {Model} model
+     * Registers a Model with the Manager. Avoid calling this method by hand. It will be called automatically by the
+     * constructor of the Model.
      */
     public static registerModel(model: Model) {
         this.models.add(model);
     }
 
     /**
-     * Unregisters a Model. It does not destroy records of this model but it does NULL its collection of Record(s).
-     * @param {Model} model
+     * Unregisters a Model. Avoid calling this method by hand. It will be called automatically by the destroy method of
+     * the Model.
+     * 
+     * It does not destroy records of this model but it does NULL its collection of Record(s).
      */
     public static unregisterModel(model: Model) {
         // // we destroy all records for this model
@@ -56,11 +55,12 @@ export class Manager {
         delete this.records[model.getId()];
     }
 
+
+
+    /* RECORD */
+
     /**
      * It returns a Collection of all Record(s) (which are not destroyed) of the specified Model.
-     * @param {Model} model
-     * @param {boolean} autoCreate
-     * @returns {Collection<Record>}
      */
     private static getRecordsCollectionForModel(model: Model, autoCreate: boolean = true): Collection<Record> {
         const id = model.getId();
@@ -75,10 +75,6 @@ export class Manager {
 
     /**
      * Registers a Record. This should not be called manually, as it's being done by the constructor of the Record.
-     * @param {Record} record
-     * @param {Model} model
-     *
-     * TODO Add a check so that a record cannot be registered multiple times.
      */
     public static registerRecord(record: Record, model: Model) {
         this.getRecordsCollectionForModel(model).add(record);
@@ -87,8 +83,6 @@ export class Manager {
     /**
      * Unregisters a record. This is automatically done at Record destroy. Unless very solid reasons, this method should
      * not be called manually.
-     * @param {Record} record
-     * @param {Model} model
      */
     public static unregisterRecord(record: Record, model: Model) {
         this.getRecordsCollectionForModel(model).remove(record);
@@ -105,11 +99,8 @@ export class Manager {
 
     /**
      * Finds the record per model and id.
-     * @param {Model} model
-     * @param {string} id
-     * @returns {Record}
      */
-    public static findRecord(model: Model, id: string): Record | undefined {
+    public static getRecord(model: Model, id: string): Record | undefined {
         return this.getRecordsCollectionForModel(model).get(id);
     }
 }

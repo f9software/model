@@ -7,13 +7,19 @@ import {reducer, ReducedRecord} from './Reducer';
 import {enhancer} from './Enhancer';
 
 /**
- * Record is a "instance" of a Model. Once the Record initialized, the Model cannot be changed, but any change on the
- * Model, like adding or removing Field(s), adding or removing Field validators will be reflected on every Record of the
- * Model.
+ * A Record is a object that is tightly coupled to a Model, meaning that the structure of a Record is given by model.
+ * This means that a Record an only store (set/get) defined in the fields (Field) of its Model. Record only has meaning
+ * in the context of a Model, so when we refer to a record we have to mention the Model too. For example, we can say
+ * record of type user, record of type document, record of type service etc.
+ * 
+ * Once a Record is initialized with a certain Model, the Model cannot be changed.
+ * 
+ * Any change on the Model, like adding or removing fields (Field), or making any change to any of the fields of the
+ * Model of the Record, these changes will be reflected on every living Record of that Model.
  *
- * Every Record has a unique identifier which is generated at Record initialization. It cannot be changed and it will
- * exist as long as the instance exist, but it will never be persisted to be restored in case of any serialization.
- * This unique ID can be accessed using the getInstanceId() method.
+ * Every Record has a unique identifier which is generated at Record initialization. This identifier cannot be changed 
+ * and it will exist as long as the instance exist, but it will never be persisted. This unique ID can be accessed 
+ * using the getInstanceId() method.
  *
  * Record is using Data underneath to store values.
  */
