@@ -39,12 +39,7 @@ export class Record<T> {
         Manager.registerRecord(this, model);
     }
 
-    /**
-     *
-     * @param {string} field
-     * @returns {any}
-     */
-    public get<K extends keyof T>(field: K): T[K] {
+    public get<K extends keyof T>(field: K): T[K] | undefined {
         return this.data.get(<string> field);
     }
 

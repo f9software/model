@@ -52,7 +52,7 @@ export class Data<T> {
      * @param {string} name
      * @returns {any}
      */
-    public get<K extends keyof T>(name: string): T[K] {
+    public get<K extends keyof T>(name: string): T[K] | undefined {
         const field = this.fields.get(name);
 
         if (!field) {
