@@ -13,7 +13,7 @@ export interface ReducedRecord extends reducers.ReducedValue {
  * @param {{[p: string]: any}} buffer
  * @returns {ReducedRecord}
  */
-export const reducer = (record: Record, buffer: {[key: string]: any} = {}): ReducedRecord => {
+export const reducer = (record: Record<any>, buffer: {[key: string]: any} = {}): ReducedRecord => {
     const data = record.dump(false);
     const model = record.getModel();
     const fields = model.getFields();

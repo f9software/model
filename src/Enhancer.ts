@@ -10,13 +10,13 @@ import {Model} from './Model';
  * @param {ReducedRecord} reducedRecord
  * @returns {Record}
  */
-export const enhancer = (reducedRecord: ReducedRecord): Record => {
-    const model = <Model> Manager.getModel(reducedRecord.$model);
+export const enhancer = <T, K extends keyof T>(reducedRecord: ReducedRecord): Record<T> => {
+    const model = <Model<T>> Manager.getModel(reducedRecord.$model);
     const fields = model.getFields();
     const record = new Record(model);
     const reducedData = reducedRecord.$value;
 
-    fields.getRange().forEach((field: Field) => record.set(field.name, reducers.enhance(reducedData[field.name])));
+    fields.getRange().forEach((field: Field) => record.set(<K> field.name, reducers.enhance(reducedData[field.name])));
 
     return record;
 };

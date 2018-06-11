@@ -1,14 +1,20 @@
 import {Model} from "../src/Model";
 import {Record} from '../src/Record';
 
-let models: {[key: string]: Model};
+export interface User {
+    firstName: string;
+    lastName: string;
+    age: number;
+}
+
+let models: {[key: string]: Model<any>};
 
 export function initModels() {
     if (models) {
         return models;
     }
 
-    const user = new Model('user');
+    const user = new Model<User>('user');
 
     user.addField({
         type: 'string',
@@ -55,7 +61,7 @@ export function initModels() {
         name: 'founder',
         defaultValue: null,
         validators: [
-            (founder: Record) => founder.getModel() === user
+            (founder: Record<User>) => founder.getModel() === user
         ]
     });
 

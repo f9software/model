@@ -23,10 +23,10 @@ import {enhancer} from './Enhancer';
  *
  * Record is using Data underneath to store values.
  */
-export class Record {
+export class Record<T> {
     private instanceId = uuid.v1();
 
-    private data: Data = this.model.initData();
+    private data: Data<T> = this.model.initData();
 
     private destroyed = false;
 
@@ -34,7 +34,7 @@ export class Record {
      *
      * @param {Model} model
      */
-    public constructor(private model: Model) {
+    public constructor(private model: Model<T>) {
         // register the instance with the Manager
         Manager.registerRecord(this, model);
     }
@@ -44,8 +44,8 @@ export class Record {
      * @param {string} field
      * @returns {any}
      */
-    public get(field: string): any {
-        return this.data.get(field);
+    public get<K extends keyof T>(field: K): T[K] {
+        return this.data.get(<string> field);
     }
 
     /**
@@ -53,7 +53,7 @@ export class Record {
      * @param {string} field
      * @param value
      */
-    public set(field: string, value: any) {
+    public set<K extends keyof T>(field: K, value: T[K]) {
         this.data.set(field, value);
     }
 
@@ -61,7 +61,7 @@ export class Record {
      * Set data for multiple fields.
      * @param {{[p: string]: any}} data
      */
-    public setAll(data: {[key: string]: any}) {
+    public setAll(data: T) {
         this.data.setAll(data);
     }
 
@@ -69,7 +69,7 @@ export class Record {
      *
      * @returns {Model}
      */
-    public getModel(): Model {
+    public getModel(): Model<T> {
         return this.model;
     }
 
@@ -86,7 +86,7 @@ export class Record {
      * @param {boolean} includeDefaultValues
      * @returns {{[p: string]: any}}
      */
-    public dump(includeDefaultValues: boolean = true) {
+    public dump(includeDefaultValues: boolean = true): Partial<T> {
         return this.data.dump(includeDefaultValues);
     }
 
@@ -96,8 +96,7 @@ export class Record {
     public destroy() {
         Manager.unregisterRecord(this, this.model);
 
-        // we null any links
-        this.data.clear();
+        this.data.destroy();
 
         delete this.model;
 
@@ -111,6 +110,6 @@ export class Record {
 
 // we register the "record" Type
 reducers.register(
-    new reducers.Type<Record, ReducedRecord>(value => value instanceof Record, reducer, enhancer),
+    new reducers.Type<Record<any>, ReducedRecord>(value => value instanceof Record, reducer, enhancer),
     'record'
 );

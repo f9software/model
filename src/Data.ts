@@ -8,8 +8,8 @@ import {Collection} from "@f9software/collection";
  *
  * TODO Put this in a separate package.
  */
-export class Data {
-    private values: {[key: string]: any} = {};
+export class Data<T> {
+    private values: Partial<T> = {};
 
     /**
      * Instantiate a Data with a Collection<Field>. It is okay if Field(s) are added or removed from Collection.
@@ -27,16 +27,17 @@ export class Data {
      * @returns {any}
      * @private
      */
-    private _get(field: Field): any {
-        let value = null;
+    private _get<K extends keyof T>(fieldName: string): T[K] {
+        let value;  // undefined
+        const field = <Field> this.fields.get(fieldName);
 
         if (this.values.hasOwnProperty(field.name)) {
-            value = this.values[field.name];
+            value = this.values[<K> field.name];
         }
         else if (field.defaultValue) {
             if (typeof field.defaultValue === 'function') {
                 value = field.defaultValue();
-                this.set(field.name, value);
+                this.set(<K> field.name, value);
             }
             else {
                 value = field.defaultValue;
@@ -51,24 +52,22 @@ export class Data {
      * @param {string} name
      * @returns {any}
      */
-    public get(name: string): any {
+    public get<K extends keyof T>(name: string): T[K] {
         const field = this.fields.get(name);
 
         if (!field) {
             throw 'Field "' + name + '" cannot be found.';
         }
 
-        return this._get(field);
+        return this._get(field.name);
     }
 
     /**
      * Sets value for the field identified by the passed name. It will validate the value. It will throw an error if
-     * the field does not exist of the value is invalid.
-     * @param {string} name
-     * @param {any} value
+     * the field does not exist or the value is invalid.
      */
-    public set(name: string, value: any) {
-        const field = this.fields.get(name);
+    public set<K extends keyof T>(name: K, value: T[K]) {
+        const field = this.fields.get(<string> name);
 
         if (!field) {
             throw 'Field "' + name + '" cannot be found.';
@@ -87,24 +86,22 @@ export class Data {
      * Set multiple properties.
      * @param {{[p: string]: any}} data
      */
-    public setAll(data: {[key: string]: any}) {
-        Object.keys(data).forEach(key => this.set(key, data[key]));
+    public setAll<K extends keyof T>(data: Partial<T>) {
+        Object.keys(data).forEach(key => this.set(<K> key, <T[K]> data[<K> key]));
     }
 
     /**
      * Dumps the data. Developer can chose whether to include or not the default values.
-     * @param {boolean} includeDefaultValues
-     * @returns {{[p: string]: any}}
      */
-    public dump(includeDefaultValues: boolean = true) {
-        const out: {[key: string]: any} = {};
+    public dump<K extends keyof T>(includeDefaultValues: boolean = true): Partial<T> {
+        const out: Partial<T> = {};
 
         this.fields.getRange()
             .forEach(field => {
                 const name = field.name;
 
                 if (includeDefaultValues || this.values.hasOwnProperty(name)) {
-                    out[name] = this._get(field);
+                    out[<K> name] = this._get(name);
                 }
             });
 
@@ -114,8 +111,8 @@ export class Data {
     /**
      * Males both fields and values NULL.
      */
-    public clear() {
-        this.fields.clear();
-        this.values = {};
+    public destroy() {
+        delete this.fields;
+        delete this.values;
     }
 }

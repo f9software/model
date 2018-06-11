@@ -8,7 +8,7 @@ import {Manager} from "./Manager";
  * 
  * Any change on model's fields is reflected further in Record.
  */
-export class Model {
+export class Model<T> {
     private fields: Collection<Field> = new Collection<Field>(field => field.name);
 
     public constructor(private readonly id: string) {
@@ -23,8 +23,8 @@ export class Model {
         this.fields.add(field);
     }
 
-    public initData(): Data {
-        return new Data(this.fields);
+    public initData(): Data<T> {
+        return new Data<T>(this.fields);
     }
 
     public getFields(): Collection<Field> {

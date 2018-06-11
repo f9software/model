@@ -9,9 +9,9 @@ import {Model} from "./Model";
  * It is no danger in using the get* methods, but pay high attention on anything else.
  */
 export class Manager {
-    private static models: Collection<Model> = new Collection<Model>(model => model.getId());
+    private static models: Collection<Model<any>> = new Collection<Model<any>>(model => model.getId());
 
-    private static records: {[key: string]: Collection<Record>} = {};
+    private static records: {[key: string]: Collection<Record<any>>} = {};
 
 
     /* MODEL */
@@ -19,11 +19,11 @@ export class Manager {
     /**
      * Returns an array containing all models.
      */
-    public static getModels(): Model[] {
+    public static getModels(): Model<any>[] {
         return this.models.getRange();
     }
 
-    public static getModel(id: string): Model | undefined {
+    public static getModel<T>(id: string): Model<T> | undefined {
         return this.models.get(id);
     }
 
@@ -31,7 +31,7 @@ export class Manager {
      * Registers a Model with the Manager. Avoid calling this method by hand. It will be called automatically by the
      * constructor of the Model.
      */
-    public static registerModel(model: Model) {
+    public static registerModel(model: Model<any>) {
         this.models.add(model);
     }
 
@@ -41,7 +41,7 @@ export class Manager {
      * 
      * It does not destroy records of this model but it does NULL its collection of Record(s).
      */
-    public static unregisterModel(model: Model) {
+    public static unregisterModel(model: Model<any>) {
         // // we destroy all records for this model
         // const collection = this.getRecordsCollectionForModel(model, false);
         // if (collection) {
@@ -62,12 +62,12 @@ export class Manager {
     /**
      * It returns a Collection of all Record(s) (which are not destroyed) of the specified Model.
      */
-    private static getRecordsCollectionForModel(model: Model, autoCreate: boolean = true): Collection<Record> {
+    private static getRecordsCollectionForModel<T>(model: Model<T>, autoCreate: boolean = true): Collection<Record<T>> {
         const id = model.getId();
 
         let collection = this.records[id];
         if (!collection && autoCreate) {
-            collection = this.records[id] = new Collection<Record>(record => record.getInstanceId());
+            collection = this.records[id] = new Collection<Record<any>>(record => record.getInstanceId());
         }
 
         return collection;
@@ -76,7 +76,7 @@ export class Manager {
     /**
      * Registers a Record. This should not be called manually, as it's being done by the constructor of the Record.
      */
-    public static registerRecord(record: Record, model: Model) {
+    public static registerRecord<T>(record: Record<T>, model: Model<T>) {
         this.getRecordsCollectionForModel(model).add(record);
     }
 
@@ -84,7 +84,7 @@ export class Manager {
      * Unregisters a record. This is automatically done at Record destroy. Unless very solid reasons, this method should
      * not be called manually.
      */
-    public static unregisterRecord(record: Record, model: Model) {
+    public static unregisterRecord<T>(record: Record<T>, model: Model<T>) {
         this.getRecordsCollectionForModel(model).remove(record);
     }
 
@@ -93,14 +93,14 @@ export class Manager {
      * @param {Model} model
      * @returns {Record[]}
      */
-    public static getRecords(model: Model): Record[] {
-        return this.getRecordsCollectionForModel(model).getRange();
+    public static getRecords<T>(model: Model<T>): Record<T>[] {
+        return this.getRecordsCollectionForModel<T>(model).getRange();
     }
 
     /**
      * Finds the record per model and id.
      */
-    public static getRecord(model: Model, id: string): Record | undefined {
-        return this.getRecordsCollectionForModel(model).get(id);
+    public static getRecord<T>(model: Model<T>, id: string): Record<T> | undefined {
+        return this.getRecordsCollectionForModel<T>(model).get(id);
     }
 }

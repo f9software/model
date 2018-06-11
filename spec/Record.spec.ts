@@ -1,5 +1,5 @@
 import 'jasmine';
-import {initModels} from "./Util";
+import {initModels, User} from "./Util";
 import {Record} from "../src/Record";
 import * as reducers from '@f9software/reducers';
 import {Manager} from "../src/Manager";
@@ -14,7 +14,7 @@ describe('Record', () => {
         const user = models.user;
         const count = Manager.getRecords(user).length;
 
-        const record = new Record(user);
+        const record = new Record<User>(user);
 
         record.set('firstName', 'John');
         record.set('lastName', 'Travis');
@@ -40,7 +40,7 @@ describe('Record', () => {
             $model: 'user'
         });
 
-        const enhancedRecord: Record = reducers.enhance(reducedRecord);
+        const enhancedRecord: Record<User> = reducers.enhance(reducedRecord);
         expect(reducers.reduce(record)).toEqual(reducedRecord);
         enhancedRecord.destroy();
 
