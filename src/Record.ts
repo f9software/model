@@ -3,7 +3,7 @@ import {Manager} from "./Manager";
 import {Data} from "./Data";
 import {Model} from "./Model";
 import * as reducers from '@f9software/reducers';
-import {reducer} from './Reducer';
+import {reducer, ReducedRecord} from './Reducer';
 import {enhancer} from './Enhancer';
 
 /**
@@ -93,7 +93,7 @@ export class Record {
         // we null any links
         this.data.clear();
 
-        this.data = this.model = null;
+        delete this.model;
 
         this.destroyed = true;
     }
@@ -104,4 +104,7 @@ export class Record {
 }
 
 // we register the "record" Type
-reducers.register(new reducers.Type(value => value instanceof Record, reducer, enhancer), 'record');
+reducers.register(
+    new reducers.Type<Record, ReducedRecord>(value => value instanceof Record, reducer, enhancer),
+    'record'
+);

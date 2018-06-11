@@ -20,7 +20,7 @@ describe('Model', () => {
         const fieldName: Field = {
             type: 'string',
             name: 'name',
-            validators: null,
+            validators: [],
             defaultValue: 'John'
         };
 

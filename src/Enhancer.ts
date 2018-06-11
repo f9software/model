@@ -3,6 +3,7 @@ import {Manager} from "./Manager";
 import {Record} from './Record';
 import {Field} from "./Field";
 import * as reducers from '@f9software/reducers';
+import {Model} from './Model';
 
 /**
  * The enhancer for a Record. Pass a ReducedRecord to it and it will return you a full Record.
@@ -10,7 +11,7 @@ import * as reducers from '@f9software/reducers';
  * @returns {Record}
  */
 export const enhancer = (reducedRecord: ReducedRecord): Record => {
-    const model = Manager.getModel(reducedRecord.$model);
+    const model = <Model> Manager.getModel(reducedRecord.$model);
     const fields = model.getFields();
     const record = new Record(model);
     const reducedData = reducedRecord.$value;

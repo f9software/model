@@ -11,14 +11,14 @@ describe('Data', () => {
             name: 'name',
             type: 'array',
             defaultValue: (): any[] => [],
-            validators: null
+            validators: []
         };
 
         const obj = {
             name: 'siblings',
             type: 'array',
             defaultValue: [],
-            validators: null
+            validators: []
         };
 
         const fields = new Collection<Field>(field => field.name);

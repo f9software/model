@@ -115,6 +115,7 @@ export class Data {
      * Males both fields and values NULL.
      */
     public clear() {
-        this.fields = this.values = null;
+        this.fields.clear();
+        this.values = {};
     }
 }

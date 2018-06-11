@@ -26,7 +26,7 @@ export class Manager {
      * @param {string} id
      * @returns {Model}
      */
-    public static getModel(id: string): Model {
+    public static getModel(id: string): Model | undefined {
         return this.models.get(id);
     }
 
@@ -53,7 +53,7 @@ export class Manager {
         this.models.remove(model);
 
         // we remove model's collection of records
-        this.records[model.getId()] = null;
+        delete this.records[model.getId()];
     }
 
     /**
@@ -109,7 +109,7 @@ export class Manager {
      * @param {string} id
      * @returns {Record}
      */
-    public static findRecord(model: Model, id: string): Record {
+    public static findRecord(model: Model, id: string): Record | undefined {
         return this.getRecordsCollectionForModel(model).get(id);
     }
 }

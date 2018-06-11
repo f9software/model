@@ -2,11 +2,12 @@
   "compilerOptions": {
     "outDir": "./dist/",
     "module": "commonjs",
-    "target": "es5",
+    "target": "es6",
     "noImplicitAny": true,
     "sourceMap": true,
-    "jsx": "react",
-    "types": ["node"]
+    // "jsx": "react",
+    // "types": ["node"],
+    "strict": true
   },
   "exclude": [
     "node_modules"

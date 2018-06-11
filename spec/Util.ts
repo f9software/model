@@ -14,14 +14,14 @@ export function initModels() {
         type: 'string',
         name: 'firstName',
         defaultValue: null,
-        validators: null
+        validators: []
     });
 
     user.addField({
         type: 'string',
         name: 'lastName',
         defaultValue: null,
-        validators: null
+        validators: []
     });
 
     user.addField({
@@ -40,14 +40,14 @@ export function initModels() {
         type: 'string',
         name: 'name',
         defaultValue: null,
-        validators: null
+        validators: []
     });
 
     company.addField({
         type: 'number',
         name: 'employees',
         defaultValue: null,
-        validators: null
+        validators: []
     });
 
     company.addField({
