@@ -11,12 +11,20 @@ import {Manager} from './Manager';
 export class Model<T> {
     private fields: Collection<Field> = new Collection<Field>(field => field.name);
 
-    public constructor(private readonly id: string) {
+    public constructor(private readonly id: string, private collectionName?: string) {
         Manager.registerModel(this);
     }
 
     public getId(): string {
         return this.id;
+    }
+
+    public setCollectionName(name: string) {
+        this.collectionName = name;
+    }
+
+    public getCollectionName(): string | undefined {
+        return this.collectionName;
     }
 
     public addField(field: Field) {

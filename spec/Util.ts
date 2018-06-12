@@ -14,7 +14,7 @@ export function initModels() {
         return models;
     }
 
-    const user = new Model<User>('user');
+    const user = new Model<User>('user', 'users');
 
     user.addField({
         type: 'string',
@@ -40,7 +40,7 @@ export function initModels() {
     });
 
 
-    const company = new Model('company');
+    const company = new Model('company', 'companies');
 
     company.addField({
         type: 'string',
