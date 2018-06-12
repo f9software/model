@@ -2,7 +2,6 @@ import 'jasmine';
 import {initModels, User} from "./Util";
 import {Record} from "../src/Record";
 import * as reducers from '@f9software/reducers';
-import {Manager} from "../src/Manager";
 import {ReducedRecord} from "../src/Reducer";
 
 describe('Record', () => {
@@ -12,7 +11,7 @@ describe('Record', () => {
     it('', () => {
 
         const user = models.user;
-        const count = Manager.getRecords(user).length;
+        // const count = Manager.getRecords(user).length;
 
         const record = new Record<User>(user);
 
@@ -44,12 +43,12 @@ describe('Record', () => {
         expect(reducers.reduce(record)).toEqual(reducedRecord);
         enhancedRecord.destroy();
 
-        expect(Manager.getRecords(user).length).toBe(count + 1);
+        // expect(Manager.getRecords(user).length).toBe(count + 1);
 
         expect(record.isDestroyed()).toBe(false);
         record.destroy();
         expect(record.isDestroyed()).toBe(true);
-        expect(Manager.getRecords(user).length).toBe(count);
+        // expect(Manager.getRecords(user).length).toBe(count);
     });
 
 });

@@ -1,7 +1,7 @@
 import {Collection} from "@f9software/collection";
 import {Data} from "./Data";
 import {Field} from "./Field";
-import {Manager} from "./Manager";
+import {Manager} from './Manager';
 
 /**
  * The model is used to create a structure for its fields. It creates a "model" in structure for its records to follow.

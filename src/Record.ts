@@ -1,5 +1,4 @@
 import * as uuid from 'uuid';
-import {Manager} from "./Manager";
 import {Data} from "./Data";
 import {Model} from "./Model";
 import * as reducers from '@f9software/reducers';
@@ -34,10 +33,7 @@ export class Record<T> {
      *
      * @param {Model} model
      */
-    public constructor(private model: Model<T>) {
-        // register the instance with the Manager
-        Manager.registerRecord(this, model);
-    }
+    public constructor(private model: Model<T>) {}
 
     public get<K extends keyof T>(field: K): T[K] | undefined {
         return this.data.get(<string> field);
@@ -88,8 +84,6 @@ export class Record<T> {
      * Destroys the Record. The instance cannot be used after destruction.
      */
     public destroy() {
-        Manager.unregisterRecord(this, this.model);
-
         this.data.destroy();
 
         delete this.model;
