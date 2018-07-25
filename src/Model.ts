@@ -9,7 +9,7 @@ import {Manager} from './Manager';
  * Any change on model's fields is reflected further in Record.
  */
 export class Model<T> {
-    private fields: Collection<Field> = new Collection<Field>(field => field.name);
+    private fields?: Collection<Field> = new Collection<Field>(field => field.name);
 
     public constructor(private readonly id: string, private collectionName?: string) {
         Manager.registerModel(this);
@@ -28,18 +28,21 @@ export class Model<T> {
     }
 
     public addField(field: Field) {
-        this.fields.add(field);
+        this.fields!.add(field);
     }
 
     public initData(): Data<T> {
-        return new Data<T>(this.fields);
+        return new Data<T>(this.fields!);
     }
 
     public getFields(): Collection<Field> {
-        return this.fields;
+        return this.fields!;
     }
 
     public destroy() {
+        this.fields!.clear();
+        this.fields = undefined;
+
         Manager.unregisterModel(this);
     }
 }
