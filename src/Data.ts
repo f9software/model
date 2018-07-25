@@ -9,7 +9,9 @@ import {Collection} from "@f9software/collection";
  * TODO Put this in a separate package.
  */
 export class Data<T> {
-    private values: Partial<T> = {};
+    private values?: Partial<T> = {};
+
+    private fields?: Collection<Field>;
 
     /**
      * Instantiate a Data with a Collection<Field>. It is okay if Field(s) are added or removed from Collection.
@@ -17,8 +19,8 @@ export class Data<T> {
      *
      * TODO When Field(s) are removed from the collection, the value set on this Data should also be removed.
      */
-    public constructor(private fields: Collection<Field>) {
-
+    public constructor(fields: Collection<Field>) {
+        this.fields = fields;
     }
 
     /**
@@ -28,19 +30,23 @@ export class Data<T> {
      * @private
      */
     private _get<K extends keyof T>(fieldName: string): T[K] {
-        let value;  // undefined
-        const field = <Field> this.fields.get(fieldName);
+        let value;
 
-        if (this.values.hasOwnProperty(field.name)) {
-            value = this.values[<K> field.name];
-        }
-        else if (field.defaultValue) {
-            if (typeof field.defaultValue === 'function') {
-                value = field.defaultValue();
-                this.set(<K> field.name, value);
+        if (this.fields && this.values) {
+            const field = <Field> this.fields.get(fieldName);
+            const values = this.values;
+
+            if (values.hasOwnProperty(field.name)) {
+                value = values[<K> field.name];
             }
-            else {
-                value = field.defaultValue;
+            else if (field.defaultValue) {
+                if (typeof field.defaultValue === 'function') {
+                    value = field.defaultValue();
+                    this.set(<K> field.name, value);
+                }
+                else {
+                    value = field.defaultValue;
+                }
             }
         }
 
@@ -53,7 +59,7 @@ export class Data<T> {
      * @returns {any}
      */
     public get<K extends keyof T>(name: string): T[K] | undefined {
-        const field = this.fields.get(name);
+        const field = this.fields!.get(name);
 
         if (!field) {
             throw 'Field "' + name + '" cannot be found.';
@@ -67,7 +73,7 @@ export class Data<T> {
      * the field does not exist or the value is invalid.
      */
     public set<K extends keyof T>(name: K, value: T[K]) {
-        const field = this.fields.get(<string> name);
+        const field = this.fields!.get(<string> name);
 
         if (!field) {
             throw 'Field "' + name + '" cannot be found.';
@@ -79,7 +85,7 @@ export class Data<T> {
             throw 'Trying to set invalid value for field "' + name + '".';
         }
 
-        this.values[name] = value;
+        this.values![name] = value;
     }
 
     /**
@@ -96,11 +102,11 @@ export class Data<T> {
     public dump<K extends keyof T>(includeDefaultValues: boolean = true): Partial<T> {
         const out: Partial<T> = {};
 
-        this.fields.getRange()
+        this.fields!.getRange()
             .forEach(field => {
                 const name = field.name;
 
-                if (includeDefaultValues || this.values.hasOwnProperty(name)) {
+                if (includeDefaultValues || this.values!.hasOwnProperty(name)) {
                     out[<K> name] = this._get(name);
                 }
             });
@@ -112,7 +118,7 @@ export class Data<T> {
      * Males both fields and values NULL.
      */
     public destroy() {
-        delete this.fields;
-        delete this.values;
+        this.fields = undefined;
+        this.values = undefined;
     }
 }

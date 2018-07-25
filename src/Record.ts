@@ -25,18 +25,23 @@ import {enhancer} from './Enhancer';
 export class Record<T> {
     private instanceId = uuid.v1();
 
-    private data: Data<T> = this.model.initData();
+    private data: Data<T> | undefined;
 
     private destroyed = false;
+
+    private model: Model<T> | undefined;
 
     /**
      *
      * @param {Model} model
      */
-    public constructor(private model: Model<T>) {}
+    public constructor(model: Model<T>) {
+        this.model = model;
+        this.data = model.initData();
+    }
 
     public get<K extends keyof T>(field: K): T[K] | undefined {
-        return this.data.get(<string> field);
+        return this.data!.get(<string> field);
     }
 
     /**
@@ -45,14 +50,14 @@ export class Record<T> {
      * @param value
      */
     public set<K extends keyof T>(field: K, value: T[K]) {
-        this.data.set(field, value);
+        this.data!.set(field, value);
     }
 
     /**
      * Set data for multiple fields.
      */
     public setAll(data: Partial<T>) {
-        this.data.setAll(data);
+        this.data!.setAll(data);
     }
 
     /**
@@ -60,7 +65,7 @@ export class Record<T> {
      * @returns {Model}
      */
     public getModel(): Model<T> {
-        return this.model;
+        return this.model!;
     }
 
     /**
@@ -77,16 +82,17 @@ export class Record<T> {
      * @returns {{[p: string]: any}}
      */
     public dump(includeDefaultValues: boolean = true): Partial<T> {
-        return this.data.dump(includeDefaultValues);
+        return this.data!.dump(includeDefaultValues);
     }
 
     /**
      * Destroys the Record. The instance cannot be used after destruction.
      */
     public destroy() {
-        this.data.destroy();
+        this.data!.destroy();
 
-        delete this.model;
+        this.data = undefined;
+        this.model = undefined;
 
         this.destroyed = true;
     }
