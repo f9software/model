@@ -1,4 +1,3 @@
-import "jasmine";
 import {Model} from "../src/Model";
 import {Manager} from "../src/Manager";
 import {Field} from "../src/Field";

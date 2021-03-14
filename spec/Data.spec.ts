@@ -1,4 +1,3 @@
-import 'jasmine';
 import {Field} from "../src/Field";
 import {Data} from "../src/Data";
 import {Collection} from '@f9software/collection';

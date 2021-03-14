@@ -1,4 +1,3 @@
-import 'jasmine';
 import {initModels, User} from "./Util";
 import {Record} from "../src/Record";
 import * as reducers from '@f9software/reducers';
