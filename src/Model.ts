@@ -10,7 +10,10 @@ import {Manager} from './Manager';
 export class Model<T> {
     private fields: Collection<Field> | undefined = new Collection<Field>(field => field.name);
 
+    private destroyed: boolean = false;
+
     public constructor(private readonly id: string, private collectionName?: string) {
+        // register with Manager
         Manager.registerModel(this);
     }
 
@@ -40,12 +43,20 @@ export class Model<T> {
         return this.fields!;
     }
 
+    // TODO Make sure there are no records that are using this model.
     public destroy() {
+        if (this.destroyed) {
+            throw new Error('You are trying to destroy an already destroyed Model.');
+        }
+
         if (this.fields) {
             this.fields.clear();
             this.fields = undefined;
         }
 
+        // unregister
         Manager.unregisterModel(this);
+
+        this.destroyed = true;
     }
 }
