@@ -58,11 +58,11 @@ export class Data<T> {
      * @param {string} name
      * @returns {any}
      */
-    public get<K extends keyof T>(name: string): T[K] | undefined {
-        const field = this.fields!.get(name);
+    public get<K extends keyof T>(name: K): T[K] {
+        const field = this.fields!.get(name as string);
 
         if (!field) {
-            throw 'Field "' + name + '" cannot be found.';
+            throw new Error(`Field "${name}" cannot be found.`);
         }
 
         return this._get(field.name);
@@ -73,7 +73,7 @@ export class Data<T> {
      * the field does not exist or the value is invalid.
      */
     public set<K extends keyof T>(name: K, value: T[K]) {
-        const field = this.fields!.get(<string> name);
+        const field = this.fields!.get(name as string);
 
         if (!field) {
             throw 'Field "' + name + '" cannot be found.';
