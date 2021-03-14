@@ -2,7 +2,6 @@ import {ReducedRecord} from "./Reducer";
 import {Record} from './Record';
 import {Field} from "./Field";
 import * as reducers from '@f9software/reducers';
-import {Model} from './Model';
 import {Manager} from "./Manager";
 
 /**
@@ -11,11 +10,11 @@ import {Manager} from "./Manager";
  * @returns {Record}
  */
 export const enhancer = <T, K extends keyof T>(reducedRecord: ReducedRecord): Record<T> => {
-    const modelId = reducedRecord.$model
+    const modelId = reducedRecord.$model;
     const model = Manager.getModel<T>(modelId);
 
     if (!model) {
-        throw 'Model "' + modelId + '" cannot be found.';
+        throw new Error(`Model "${modelId}" cannot be found.`);
     }
 
     const fields = model.getFields();

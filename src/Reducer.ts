@@ -1,6 +1,5 @@
 import {Record} from './Record';
 import * as reducers from '@f9software/reducers';
-import {Field} from './Field';
 
 export interface ReducedRecord extends reducers.ReducedValue {
     $model: string;
@@ -20,8 +19,13 @@ export const reducer = (record: Record<any>, buffer: {[key: string]: any} = {}):
     const reducedData: {[key: string]: any} = {};   // short of reduced data
 
     Object.keys(data)
-        .forEach(fieldName => {
-            const field = <Field> fields.get(fieldName);
+        .forEach((fieldName) => {
+            const field = fields.get(fieldName);
+
+            if (!field) {
+                throw new Error(`Field "${fieldName}" does not exist on model "${model.getId()}".`);
+            }
+
             const type = field.type;
             const value = data[fieldName];
 
